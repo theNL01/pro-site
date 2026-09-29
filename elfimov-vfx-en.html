@@ -110,33 +110,59 @@ h2{font-family:var(--display);font-weight:600;font-size:clamp(24px,3.4vw,40px);l
 footer{border-top:1px solid var(--line);padding:26px 28px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--wire);}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
 .reveal.in{opacity:1;transform:none}
-.chat-fab{position:fixed;right:22px;bottom:22px;z-index:90;width:60px;height:60px;border-radius:50%;border:0;cursor:pointer;background:var(--key);color:#0b1c10;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(46,224,111,.35);transition:transform .2s;}
-.chat-fab:hover{transform:scale(1.07)}.chat-fab svg{width:26px;height:26px}
-.chat-panel{position:fixed;right:22px;bottom:94px;z-index:95;width:min(370px,calc(100vw - 32px));height:min(520px,70vh);background:var(--panel);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);transform:translateY(14px);opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;}
-.chat-panel.open{transform:none;opacity:1;pointer-events:auto}
-.chat-head{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--panel-2);border-bottom:1px solid var(--line);}
-.chat-ava{width:38px;height:38px;border-radius:50%;flex-shrink:0;background-image:linear-gradient(45deg,#3a3f46 25%,transparent 25%,transparent 75%,#3a3f46 75%),linear-gradient(45deg,#3a3f46 25%,#2b2f35 25%,#2b2f35 75%,#3a3f46 75%);background-size:12px 12px;background-position:0 0,6px 6px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:14px;color:var(--key);}
-.chat-head .who b{display:block;font-size:14px}
-.chat-head .who span{font-family:var(--mono);font-size:11px;color:var(--key)}
-.chat-head .who span::before{content:"●";margin-right:5px;font-size:9px}
-.chat-close{margin-left:auto;background:none;border:0;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;padding:4px}
-.chat-close:hover{color:var(--text)}
-.chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
-.msg{max-width:82%;padding:10px 14px;border-radius:12px;font-size:14px;line-height:1.5;animation:msgin .25s ease}
-@keyframes msgin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.msg.bot{background:var(--panel-2);border:1px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start}
-.msg.user{background:var(--key);color:#0b1c10;border-bottom-right-radius:4px;align-self:flex-end}
-.msg .actions{display:flex;flex-direction:column;gap:8px;margin-top:10px}
-.msg .actions a,.msg .actions button{font-family:var(--mono);font-size:12.5px;text-align:center;cursor:pointer;padding:9px 12px;border-radius:7px;border:1px solid var(--key);color:var(--key);background:transparent;transition:.15s;}
-.msg .actions a:hover,.msg .actions button:hover{background:var(--key);color:#0b1c10;text-decoration:none}
-.typing{display:inline-flex;gap:4px;padding:12px 16px}
-.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:tp 1s infinite}
-.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
-@keyframes tp{0%,100%{opacity:.25}50%{opacity:1}}
-.chat-input{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:var(--panel-2)}
-.chat-input input{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 13px;color:var(--text);font-family:var(--body);font-size:14px;}
-.chat-input input:focus{outline:none;border-color:var(--key)}
-.chat-input button{width:44px;border:0;border-radius:8px;background:var(--key);color:#0b1c10;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.brief-fab{position:fixed;right:22px;bottom:22px;z-index:90;height:54px;padding:0 22px 0 18px;border-radius:27px;border:0;cursor:pointer;background:var(--key);color:#0b1c10;display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:13.5px;font-weight:600;letter-spacing:.02em;box-shadow:0 8px 28px rgba(46,224,111,.35);transition:transform .2s;}
+.brief-fab:hover{transform:translateY(-2px)}
+.brief-fab svg{width:19px;height:19px}
+nav a.nav-cta{color:var(--key)}
+.brief-overlay{position:fixed;inset:0;z-index:100;background:rgba(10,11,13,.74);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.brief-overlay.open{opacity:1;pointer-events:auto}
+.brief-modal{width:min(520px,100%);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow-y:auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.55);transform:translateY(14px);transition:transform .22s;}
+.brief-overlay.open .brief-modal{transform:none}
+.brief-head{display:flex;align-items:flex-start;gap:12px;padding:20px 22px 16px;border-bottom:1px solid var(--line);background-color:var(--panel-2);background-image:linear-gradient(45deg,var(--check-a) 25%,transparent 25%,transparent 75%,var(--check-a) 75%),linear-gradient(45deg,var(--check-a) 25%,var(--check-b) 25%,var(--check-b) 75%,var(--check-a) 75%);background-size:16px 16px;background-position:0 0,8px 8px;}
+.brief-head .tag{display:block;font-family:var(--mono);font-size:11.5px;color:var(--key);margin-bottom:8px}
+.brief-head h2{font-family:var(--display);font-weight:600;font-size:20px;line-height:1.2;margin-bottom:6px}
+.brief-head p{font-size:14px;color:var(--muted);line-height:1.5}
+.brief-close{margin-left:auto;background:none;border:0;color:var(--muted);cursor:pointer;font-size:24px;line-height:1;padding:2px 4px}
+.brief-close:hover{color:var(--text)}
+.brief-form{padding:20px 22px 22px;display:flex;flex-direction:column;gap:16px;position:relative}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f .lb{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.f .lb i{color:var(--key);font-style:normal}
+.f input[type=text],.f textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 13px;color:var(--text);font-family:var(--body);font-size:15px;}
+.f textarea{min-height:112px;resize:vertical;line-height:1.5}
+.f input[type=text]:focus,.f textarea:focus{outline:none;border-color:var(--key)}
+.f.err input[type=text],.f.err textarea{border-color:#ff6b6b}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label{font-family:var(--body);font-size:13.5px;padding:8px 15px;border:1px solid var(--line);border-radius:999px;cursor:pointer;color:var(--text);transition:.15s;}
+.chips label:hover{border-color:var(--wire)}
+.chips input:checked+label{background:var(--key-dim);border-color:var(--key);color:var(--key)}
+.chips input:focus-visible+label{outline:2px solid var(--key);outline-offset:2px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.brief-status{font-size:13.5px;line-height:1.5;color:#ff8a8a;min-height:0}
+.brief-status:empty{display:none}
+.brief-status a{color:var(--key)}
+.brief-submit{width:100%;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.03em;padding:14px 22px;border-radius:8px;border:0;cursor:pointer;background:var(--key);color:#0b1c10;transition:background .15s,opacity .15s;}
+.brief-submit:hover{background:#4dea86}
+.brief-submit:disabled{opacity:.5;cursor:default}
+.brief-done{display:none;padding:40px 26px 32px;text-align:center}
+.brief-done .ok{width:56px;height:56px;margin:0 auto 18px;border-radius:50%;background:var(--key-dim);border:1px solid var(--key);color:var(--key);display:flex;align-items:center;justify-content:center}
+.brief-done .ok svg{width:26px;height:26px}
+.brief-done h3{font-family:var(--display);font-weight:600;font-size:18px;margin-bottom:8px}
+.brief-done p{color:var(--muted);font-size:14.5px;line-height:1.5;margin-bottom:22px}
+.brief-done .brief-submit{width:auto;padding:12px 30px}
+@media(max-width:520px){.row2{grid-template-columns:1fr}.brief-fab{right:16px;bottom:16px}}
+.music-btn{position:fixed;left:22px;bottom:22px;z-index:90;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:rgba(33,36,41,.88);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .2s,border-color .2s,transform .2s;}
+.music-btn:hover{color:var(--text);transform:translateY(-2px)}
+.music-btn.on{color:var(--key);border-color:var(--key)}
+.music-btn .eq{display:flex;align-items:flex-end;gap:3px;height:16px}
+.music-btn .eq i{display:block;width:3px;height:5px;background:currentColor;border-radius:1px}
+.music-btn .eq i:nth-child(2){height:9px}.music-btn .eq i:nth-child(3){height:6px}.music-btn .eq i:nth-child(4){height:11px}
+.music-btn.on .eq i{animation:eqb 1.2s ease-in-out infinite}
+.music-btn.on .eq i:nth-child(2){animation-delay:.25s}.music-btn.on .eq i:nth-child(3){animation-delay:.5s}.music-btn.on .eq i:nth-child(4){animation-delay:.12s}
+@keyframes eqb{0%,100%{height:4px}50%{height:15px}}
+@media(max-width:520px){.music-btn{left:16px;bottom:16px}}
+#projects h2{margin-bottom:34px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}.reveal{opacity:1;transform:none}}
 </style>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -147,11 +173,12 @@ footer{border-top:1px solid var(--line);padding:26px 28px;display:flex;justify-c
 </head>
 <body>
 <header>
-  <div class="logo"><b>ELFIMOV</b>.VFX — comp_v01</div>
+  <div class="logo"><b>elfimov</b>.pro</div>
   <div class="header-right">
     <nav>
       <a href="#projects">Projects</a>
       <a href="#career">Career</a>
+    <a href="#" class="nav-cta" onclick="openForm();return false">Request</a>
     </nav>
     <div class="lang-switch">
       <a href="elfimov-vfx-ru.html">RU</a>
@@ -172,7 +199,7 @@ footer{border-top:1px solid var(--line);padding:26px 28px;display:flex;justify-c
     <p class="hero-sub">Compositing for film, TV series and advertising.</p>
     <div class="hero-cta">
       <a class="btn btn-key" href="https://vimeo.com/1206949486" target="_blank" rel="noopener">▶&nbsp;Watch Demo Reel</a>
-      <button class="btn btn-ghost" onclick="openChat()">💬&nbsp;Get in Touch</button>
+      <button class="btn btn-ghost" onclick="openForm()">Send a request</button>
     </div>
   </div>
   <span class="hero-scroll">SCROLL ▼</span>
@@ -185,7 +212,6 @@ footer{border-top:1px solid var(--line);padding:26px 28px;display:flex;justify-c
 </div>
 
 <section id="projects">
-  <span class="sec-label">// timeline: projects</span>
   <h2>Film, TV & Advertising</h2>
   <div class="proj-cols reveal">
     <div class="proj-card" style="--pc:#2ee06f">
@@ -223,7 +249,6 @@ footer{border-top:1px solid var(--line);padding:26px 28px;display:flex;justify-c
 <div class="divider checker" aria-hidden="true"></div>
 
 <section id="career">
-  <span class="sec-label">// version_history</span>
   <h2>Career path</h2>
   <div class="timeline reveal" style="margin-top:36px">
     <div class="t-item">
@@ -246,42 +271,107 @@ footer{border-top:1px solid var(--line);padding:26px 28px;display:flex;justify-c
 
 <footer>
   <span>© 2026 Alexey Elfimov · VFX Compositor</span>
-  <span>render complete · no artifacts detected</span>
 </footer>
 
-<button class="chat-fab" id="chatFab" aria-label="Open chat" onclick="toggleChat()">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+<audio id="bgm" src="bg-blues.mp3" loop preload="none"></audio>
+<button class="music-btn" id="musicBtn" type="button" aria-pressed="false" aria-label="Turn music on" title="Turn music on">
+  <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
 </button>
-<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Contact chat">
-  <div class="chat-head">
-    <div class="chat-ava">AE</div>
-    <div class="who"><b>Alexey Elfimov</b><span>online · quick to reply</span></div>
-    <button class="chat-close" aria-label="Close chat" onclick="toggleChat()">×</button>
-  </div>
-  <div class="chat-body" id="chatBody"></div>
-  <div class="chat-input">
-    <input id="chatInput" type="text" placeholder="Your answer…" autocomplete="off" onkeydown="if(event.key==='Enter')sendMsg()">
-    <button id="chatSend" onclick="sendMsg()" aria-label="Send">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
-    </button>
+<button class="brief-fab" id="briefFab" aria-haspopup="dialog" aria-label="Send a project request" onclick="openForm()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+  <span>Request</span>
+</button>
+<div class="brief-overlay" id="briefOverlay" onclick="if(event.target===this)closeForm()">
+  <div class="brief-modal" role="dialog" aria-modal="true" aria-labelledby="briefTitle">
+    <div class="brief-head">
+      <div>
+        <span class="tag">// write: project_brief</span>
+        <h2 id="briefTitle">Project request</h2>
+        <p>Describe the task — I'll get back to you via the contact you leave.</p>
+      </div>
+      <button type="button" class="brief-close" aria-label="Close" onclick="closeForm()">&times;</button>
+    </div>
+    <form class="brief-form" id="briefForm" novalidate>
+      <div class="row2">
+        <div class="f" id="fName"><label class="lb" for="bName">Name <i>*</i></label><input type="text" id="bName" maxlength="80" autocomplete="name"></div>
+        <div class="f" id="fContact"><label class="lb" for="bContact">Contact <i>*</i></label><input type="text" id="bContact" maxlength="100" placeholder="@telegram or email"></div>
+      </div>
+      <div class="f">
+        <span class="lb">Project type</span>
+        <div class="chips">
+          <input type="radio" name="btype" id="bt0" value="Film"><label for="bt0">Film</label>
+          <input type="radio" name="btype" id="bt1" value="TV series"><label for="bt1">TV series</label>
+          <input type="radio" name="btype" id="bt2" value="Advertising"><label for="bt2">Advertising</label>
+          <input type="radio" name="btype" id="bt3" value="Other"><label for="bt3">Other</label>
+        </div>
+      </div>
+      <div class="f" id="fText"><label class="lb" for="bText">Task <i>*</i></label><textarea id="bText" maxlength="2000" placeholder="What the project is, what needs to be done, rough volume"></textarea></div>
+      <div class="f"><label class="lb" for="bDeadline">Timeline</label><input type="text" id="bDeadline" maxlength="100" placeholder="E.g. by end of October"></div>
+      <div class="hp" aria-hidden="true"><label>Website<input type="text" id="bWebsite" tabindex="-1" autocomplete="off"></label></div>
+      <div class="brief-status" id="briefStatus" role="status" aria-live="polite"></div>
+      <button type="submit" class="brief-submit" id="briefSubmit">Send request</button>
+    </form>
+    <div class="brief-done" id="briefDone">
+      <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <h3>Request sent</h3>
+      <p>Thanks! I'll review it and get in touch.</p>
+      <button type="button" class="brief-submit" onclick="closeForm()">Close</button>
+    </div>
   </div>
 </div>
 <script>
 (function(){var t=document.getElementById('tickerTrack');t.innerHTML+=t.innerHTML;})();
 (function(){if(!('IntersectionObserver' in window)){document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in')});return}var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});},{threshold:.12});document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});})();
-var chatState={step:-1,name:'',contact:'',text:''};
-var panel=document.getElementById('chatPanel');
-var body=document.getElementById('chatBody');
-var input=document.getElementById('chatInput');
-var started=false;
-function toggleChat(){panel.classList.toggle('open');if(panel.classList.contains('open')){if(!started){started=true;botSay('Hi! I\'m available 👋 Tell me about your project or position.',function(){botSay('What\'s your name?');chatState.step=0;});}setTimeout(function(){input.focus()},250);}}
-function openChat(){if(!panel.classList.contains('open'))toggleChat()}
-function addMsg(cls,html){var d=document.createElement('div');d.className='msg '+cls;d.innerHTML=html;body.appendChild(d);body.scrollTop=body.scrollHeight;return d;}
-function botSay(html,cb){var t=document.createElement('div');t.className='msg bot typing';t.innerHTML='<i></i><i></i><i></i>';body.appendChild(t);body.scrollTop=body.scrollHeight;setTimeout(function(){t.classList.remove('typing');t.innerHTML=html;body.scrollTop=body.scrollHeight;if(cb)setTimeout(cb,450);},650);}
-function esc(s){return s.replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];})}
-function sendMsg(){var v=input.value.trim();if(!v||chatState.step<0||chatState.step>2)return;addMsg('user',esc(v));input.value='';if(chatState.step===0){chatState.name=v;chatState.step=1;botSay('Nice to meet you, '+esc(v)+'! Leave a contact — Telegram or email.');}else if(chatState.step===1){chatState.contact=v;chatState.step=2;botSay('Great. Now briefly describe the project: what is it, timeline, scope?');}else if(chatState.step===2){chatState.text=v;chatState.step=3;finishChat();}}
-function finishChat(){var summary='Request from site\\n\\nName: '+chatState.name+'\\nContact: '+chatState.contact+'\\nMessage: '+chatState.text;botSay('Thanks! Sending your request… 🎬');fetch('https://script.google.com/macros/s/AKfycbxTis0VkhK6GtFRVYJo3WelIO7EMwTrPd1K4ne_F82GlAgG7mFr_8aS_MG3zSVG7YIyAg/exec',{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({name:chatState.name,contact:chatState.contact,text:chatState.text})}).then(function(r){return r.json();}).then(function(){botSay('Done! Got your request, will be in touch soon 🙌');}).catch(function(){botSay('Could not send — write directly: <a href="https://t.me/thenullobject" target="_blank">@thenullobject</a>');});window._summary=summary;}
-function copySummary(btn){if(navigator.clipboard){navigator.clipboard.writeText(window._summary||'');}if(btn){btn.textContent='Copied ✓';setTimeout(function(){btn.textContent='Copy enquiry text'},2000);}}
+var FORM_URL='https://script.google.com/macros/s/AKfycbxTis0VkhK6GtFRVYJo3WelIO7EMwTrPd1K4ne_F82GlAgG7mFr_8aS_MG3zSVG7YIyAg/exec';
+var L={type:'Project type',deadline:'Timeline',task:'Task',site:'Site version: EN',sending:'Sending…',submit:'Send request',req:'Please fill in the required fields.',fail:'Could not send. Write me directly:'};
+var ov=document.getElementById('briefOverlay'),bForm=document.getElementById('briefForm'),bDone=document.getElementById('briefDone'),bStatus=document.getElementById('briefStatus'),bBtn=document.getElementById('briefSubmit'),lastFocus=null,sending=false;
+function openForm(){lastFocus=document.activeElement;ov.classList.add('open');document.body.style.overflow='hidden';setTimeout(function(){var f=document.getElementById('bName');if(f&&bForm.style.display!=='none')f.focus();},220);}
+function closeForm(){ov.classList.remove('open');document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus();if(bDone.style.display==='block'){setTimeout(function(){bForm.reset();bForm.style.display='';bDone.style.display='none';bStatus.textContent='';},250);}}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov.classList.contains('open'))closeForm()});
+function setErr(id,on){document.getElementById(id).classList.toggle('err',on)}
+function showDone(){bForm.style.display='none';bDone.style.display='block';}
+bForm.addEventListener('submit',function(e){
+  e.preventDefault();if(sending)return;
+  var name=document.getElementById('bName').value.trim(),contact=document.getElementById('bContact').value.trim(),task=document.getElementById('bText').value.trim(),deadline=document.getElementById('bDeadline').value.trim();
+  var tEl=bForm.querySelector('input[name="btype"]:checked'),type=tEl?tEl.value:'';
+  setErr('fName',!name);setErr('fContact',!contact);setErr('fText',!task);
+  if(!name||!contact||!task){bStatus.textContent=L.req;return;}
+  bStatus.textContent='';
+  if(document.getElementById('bWebsite').value){showDone();return;}
+  var msg=(type?L.type+': '+type+'\n':'')+(deadline?L.deadline+': '+deadline+'\n':'')+L.task+': '+task+'\n\n('+L.site+')';
+  sending=true;bBtn.disabled=true;bBtn.textContent=L.sending;
+  fetch(FORM_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({name:name,contact:contact,text:msg})})
+    .then(function(r){return r.json()})
+    .then(function(j){if(j&&j.ok){showDone()}else{throw new Error('bad response')}})
+    .catch(function(){bStatus.innerHTML=L.fail+' <a href="https://t.me/thenullobject" target="_blank" rel="noopener">@thenullobject</a>';})
+    .then(function(){sending=false;bBtn.disabled=false;bBtn.textContent=L.submit;});
+});
+
+(function(){
+  var a=document.getElementById('bgm'),b=document.getElementById('musicBtn');
+  if(!a||!b)return;
+  var ON='Turn music on',OFF='Turn music off',KEY='elfimov_music',TK='elfimov_music_t',VOL=.35,want=false,wasPlaying=false,fadeT=null,lastSave=0;
+  function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
+  function put(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  function ui(on){b.classList.toggle('on',on);b.setAttribute('aria-pressed',on?'true':'false');var s=on?OFF:ON;b.setAttribute('aria-label',s);b.title=s;}
+  function fade(to,ms,done){clearInterval(fadeT);var from=a.volume,steps=Math.max(1,Math.round(ms/40)),i=0;fadeT=setInterval(function(){i++;a.volume=Math.min(1,Math.max(0,from+(to-from)*i/steps));if(i>=steps){clearInterval(fadeT);if(done)done();}},40);}
+  function play(){a.volume=0;var p=a.play();if(p&&p.then){p.then(function(){fade(VOL,1500)}).catch(function(){want=false;ui(false);});}else{fade(VOL,1500);}}
+  function pause(){fade(0,500,function(){a.pause()});}
+  var t0=parseFloat(get(TK)||'0');
+  if(t0>0){a.addEventListener('loadedmetadata',function(){if(a.duration&&t0<a.duration-3)try{a.currentTime=t0}catch(e){}},{once:true});}
+  b.addEventListener('click',function(){want=!want;put(KEY,want?'1':'0');ui(want);if(want)play();else pause();});
+  if(get(KEY)==='1'){
+    want=true;ui(true);
+    var start=function(e){if(b.contains(e.target))return;document.removeEventListener('pointerdown',start,true);document.removeEventListener('keydown',start,true);if(want&&a.paused)play();};
+    document.addEventListener('pointerdown',start,true);document.addEventListener('keydown',start,true);
+  }
+  a.addEventListener('timeupdate',function(){var n=Date.now();if(n-lastSave>4000){lastSave=n;put(TK,String(Math.floor(a.currentTime)));}});
+  window.addEventListener('pagehide',function(){put(TK,String(Math.floor(a.currentTime)));});
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){wasPlaying=!a.paused;if(wasPlaying){clearInterval(fadeT);a.pause();}}
+    else if(wasPlaying&&want){wasPlaying=false;play();}
+  });
+})();
 </script>
 </body>
 </html>
