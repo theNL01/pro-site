@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Алексей Елфимов — VFX Compositor / Nuke</title>
+<meta name="description" content="VFX Compositor / Compositing Artist. Nuke, клинап, кеинг, screen inserts. Кино, сериалы, реклама.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#191b1f;--panel:#212429;--panel-2:#282c32;--line:#33383f;
+  --text:#e9ebee;--muted:#9aa1ab;--key:#2ee06f;--key-dim:rgba(46,224,111,.14);
+  --wire:#4b525c;--check-a:#23262b;--check-b:#1d2024;--radius:10px;
+  --display:'Unbounded',sans-serif;--body:'Golos Text',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+::selection{background:var(--key);color:#0c1a10}
+a{color:var(--key);text-decoration:none}a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--key);outline-offset:3px;border-radius:4px}
+.checker{background-image:linear-gradient(45deg,var(--check-a) 25%,transparent 25%,transparent 75%,var(--check-a) 75%),linear-gradient(45deg,var(--check-a) 25%,var(--check-b) 25%,var(--check-b) 75%,var(--check-a) 75%);background-size:24px 24px;background-position:0 0,12px 12px;}
+.divider{height:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(25,27,31,.72);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);}
+.logo{font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:var(--text)}.logo b{color:var(--key);font-weight:500}
+.header-right{display:flex;align-items:center;gap:22px}
+nav{display:flex;gap:22px}
+nav a{font-family:var(--mono);font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+nav a:hover{color:var(--text);text-decoration:none}
+.lang-switch{font-family:var(--mono);font-size:12px;display:flex;gap:6px;align-items:center}
+.lang-switch a{color:var(--muted);padding:4px 8px;border-radius:5px;border:1px solid transparent}
+.lang-switch a.active{color:var(--key);border-color:rgba(46,224,111,.4);background:var(--key-dim)}
+.lang-switch a:hover{color:var(--text);text-decoration:none}
+@media(max-width:720px){nav{display:none}}
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;display:flex;align-items:flex-end}
+.hero-video{position:absolute;inset:0;pointer-events:none}
+.hero-video iframe{position:absolute;top:50%;left:50%;width:100vw;height:56.25vw;min-height:100vh;min-width:177.78vh;transform:translate(-50%,-50%);border:0;}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(25,27,31,.55) 0%,rgba(25,27,31,.15) 40%,rgba(25,27,31,.9) 88%,var(--bg) 100%);}
+.hero-inner{position:relative;z-index:2;width:100%;max-width:1160px;margin:0;padding:0 28px 64px 52px}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--key);border:1px solid rgba(46,224,111,.35);background:rgba(25,27,31,.6);padding:6px 12px;border-radius:99px;margin-bottom:18px;}
+.hero-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--key);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,6.2vw,74px);line-height:1.04;letter-spacing:-.01em;margin-bottom:14px;}
+h1 .alpha{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.85);background-image:linear-gradient(45deg,rgba(255,255,255,.13) 25%,transparent 25%,transparent 75%,rgba(255,255,255,.13) 75%),linear-gradient(45deg,rgba(255,255,255,.13) 25%,transparent 25%,transparent 75%,rgba(255,255,255,.13) 75%);background-size:18px 18px;background-position:0 0,9px 9px;-webkit-background-clip:text;background-clip:text;}
+.hero-sub{max-width:560px;color:#c9ced5;font-size:clamp(15px,1.6vw,18px);margin-bottom:26px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:13.5px;font-weight:500;letter-spacing:.03em;padding:13px 22px;border-radius:8px;border:1px solid transparent;cursor:pointer;transition:transform .15s ease,background .15s ease,border-color .15s;}
+.btn:hover{text-decoration:none;transform:translateY(-1px)}
+.btn-key{background:var(--key);color:#0b1c10}.btn-key:hover{background:#4dea86}
+.btn-ghost{background:rgba(25,27,31,.55);border-color:var(--line);color:var(--text)}.btn-ghost:hover{border-color:var(--key);color:var(--key)}
+.hero-scroll{position:absolute;right:28px;bottom:64px;z-index:2;font-family:var(--mono);font-size:11px;color:var(--muted);writing-mode:vertical-rl;letter-spacing:.25em;}
+@media(max-width:720px){.hero-scroll{display:none}}
+.ticker{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--panel)}
+.ticker-track{display:flex;width:max-content;animation:ticker 32s linear infinite;padding:13px 0}
+.ticker span{font-family:var(--mono);font-size:13px;color:var(--muted);padding:0 26px;white-space:nowrap;letter-spacing:.05em;}
+.ticker span::after{content:"✦";color:var(--key);margin-left:52px;font-size:10px}
+@keyframes ticker{to{transform:translateX(-50%)}}
+section{width:100%;padding:88px 28px 88px 52px}
+.sec-label{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--key);background:var(--key-dim);border:1px solid rgba(46,224,111,.3);border-radius:6px;padding:4px 10px;margin-bottom:16px;}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(24px,3.4vw,40px);line-height:1.15;margin-bottom:12px}
+.sec-intro{color:var(--muted);max-width:640px;margin-bottom:44px}
+.about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:44px;align-items:start}
+.about-text p{margin-bottom:16px;color:#cfd4da;font-size:17px}.about-text strong{color:var(--text)}
+.stat-stack{display:grid;gap:14px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;display:flex;align-items:baseline;gap:14px;}
+.stat b{font-family:var(--display);font-weight:600;font-size:30px;color:var(--key)}.stat span{color:var(--muted);font-size:14px}
+@media(max-width:840px){.about-grid{grid-template-columns:1fr}}
+.dag{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:44px 28px;margin-top:8px}
+.dag::before{content:"";position:absolute;left:50%;top:-28px;bottom:-8px;width:2px;background:repeating-linear-gradient(180deg,var(--wire) 0 6px,transparent 6px 12px);}
+.node{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px 16px 22px;transition:border-color .2s,transform .2s;}
+.node::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:8px 0 0 8px;background:var(--nc,var(--key))}
+.node::after{content:"";position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--nc,var(--key));}
+.node:hover{border-color:var(--nc,var(--key));transform:translateY(-3px)}
+.node h3{font-family:var(--mono);font-weight:500;font-size:14.5px;margin-bottom:6px}
+.node p{font-size:13.5px;color:var(--muted);line-height:1.5}
+.node .cls{position:absolute;top:14px;right:14px;font-family:var(--mono);font-size:10px;color:var(--wire);letter-spacing:.08em}
+@media(max-width:900px){.dag{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.dag{grid-template-columns:1fr}.dag::before{left:14px}}
+.spec-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px}
+.chip{font-family:var(--mono);font-size:12.5px;color:var(--text);border:1px solid var(--line);background:var(--panel);padding:8px 14px;border-radius:99px;transition:.2s;}
+.chip:hover{border-color:var(--key);color:var(--key)}
+.proj-cols{display:grid;grid-template-columns:1fr 1.4fr;gap:28px}
+.proj-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+.proj-card h3{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.08em;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.proj-card h3::before{content:"";width:8px;height:8px;background:var(--pc,var(--key))}
+.film-list{list-style:none}
+.film-list li{font-family:var(--display);font-weight:400;font-size:clamp(17px,2vw,21px);padding:13px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.film-list li:last-child{border-bottom:0}
+.film-list .fmt{font-family:var(--mono);font-size:10.5px;color:var(--wire);letter-spacing:.1em;flex-shrink:0}
+.series-cloud{display:flex;flex-wrap:wrap;gap:9px}
+.series-cloud span{font-size:14px;color:#cfd4da;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:7px 12px;}
+.ad-note{margin-top:18px;font-size:14px;color:var(--muted)}
+@media(max-width:840px){.proj-cols{grid-template-columns:1fr}}
+.timeline{position:relative;padding-left:34px}
+.timeline::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:repeating-linear-gradient(180deg,var(--wire) 0 6px,transparent 6px 12px)}
+.t-item{position:relative;padding-bottom:36px}.t-item:last-child{padding-bottom:0}
+.t-item::before{content:"";position:absolute;left:-31px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2.5px solid var(--key);}
+.t-item .years{font-family:var(--mono);font-size:12.5px;color:var(--key);letter-spacing:.06em}
+.t-item h3{font-family:var(--display);font-weight:600;font-size:19px;margin:6px 0 6px}
+.t-item p{color:var(--muted);max-width:620px;font-size:15px}
+.cond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:44px}
+.cond{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+.cond .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--muted);margin-bottom:10px}
+.cond .v{font-size:16.5px;font-weight:600;line-height:1.4}
+.cond .v small{display:block;font-weight:400;color:var(--muted);font-size:13.5px;margin-top:4px}
+@media(max-width:840px){.cond-grid{grid-template-columns:1fr}}
+.contact-row{display:flex;flex-wrap:wrap;gap:14px}
+footer{border-top:1px solid var(--line);padding:26px 28px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--wire);}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+.chat-fab{position:fixed;right:22px;bottom:22px;z-index:90;width:60px;height:60px;border-radius:50%;border:0;cursor:pointer;background:var(--key);color:#0b1c10;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(46,224,111,.35);transition:transform .2s;}
+.chat-fab:hover{transform:scale(1.07)}
+.chat-fab svg{width:26px;height:26px}
+.chat-panel{position:fixed;right:22px;bottom:94px;z-index:95;width:min(370px,calc(100vw - 32px));height:min(520px,70vh);background:var(--panel);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);transform:translateY(14px);opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;}
+.chat-panel.open{transform:none;opacity:1;pointer-events:auto}
+.chat-head{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--panel-2);border-bottom:1px solid var(--line);}
+.chat-ava{width:38px;height:38px;border-radius:50%;flex-shrink:0;background-image:linear-gradient(45deg,#3a3f46 25%,transparent 25%,transparent 75%,#3a3f46 75%),linear-gradient(45deg,#3a3f46 25%,#2b2f35 25%,#2b2f35 75%,#3a3f46 75%);background-size:12px 12px;background-position:0 0,6px 6px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:14px;color:var(--key);}
+.chat-head .who b{display:block;font-size:14px}
+.chat-head .who span{font-family:var(--mono);font-size:11px;color:var(--key)}
+.chat-head .who span::before{content:"●";margin-right:5px;font-size:9px}
+.chat-close{margin-left:auto;background:none;border:0;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;padding:4px}
+.chat-close:hover{color:var(--text)}
+.chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:82%;padding:10px 14px;border-radius:12px;font-size:14px;line-height:1.5;animation:msgin .25s ease}
+@keyframes msgin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.msg.bot{background:var(--panel-2);border:1px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start}
+.msg.user{background:var(--key);color:#0b1c10;border-bottom-right-radius:4px;align-self:flex-end}
+.msg .actions{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.msg .actions a,.msg .actions button{font-family:var(--mono);font-size:12.5px;text-align:center;cursor:pointer;padding:9px 12px;border-radius:7px;border:1px solid var(--key);color:var(--key);background:transparent;transition:.15s;}
+.msg .actions a:hover,.msg .actions button:hover{background:var(--key);color:#0b1c10;text-decoration:none}
+.typing{display:inline-flex;gap:4px;padding:12px 16px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:tp 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes tp{0%,100%{opacity:.25}50%{opacity:1}}
+.chat-input{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:var(--panel-2)}
+.chat-input input{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 13px;color:var(--text);font-family:var(--body);font-size:14px;}
+.chat-input input:focus{outline:none;border-color:var(--key)}
+.chat-input button{width:44px;border:0;border-radius:8px;background:var(--key);color:#0b1c10;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.chat-input button:disabled{opacity:.4;cursor:default}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><b>ELFIMOV</b>.VFX — comp_v01</div>
+  <div class="header-right">
+    <nav>
+      <a href="#projects">Проекты</a>
+      <a href="#career">Опыт</a>
+    </nav>
+    <div class="lang-switch">
+      <a class="active" href="elfimov-vfx-ru.html">RU</a>
+      <a href="elfimov-vfx-en.html">EN</a>
+    </div>
+  </div>
+</header>
+
+<div class="hero" id="top">
+  <div class="hero-video" aria-hidden="true">
+    <iframe src="https://player.vimeo.com/video/1206949486?autoplay=1&muted=1&loop=1&autopause=0&controls=0&title=0&byline=0&portrait=0&dnt=1"
+      allow="autoplay; fullscreen" title="Демо-рил Алексея Елфимова"></iframe>
+  </div>
+  <div class="hero-shade"></div>
+  <div class="hero-inner">
+    <span class="hero-tag"><span class="dot"></span>OPEN TO WORK · FULLTIME / PROJECT</span>
+    <h1>Алексей Елфимов<br><span class="alpha">VFX Compositor</span></h1>
+    <p class="hero-sub">Композитинг для кино, сериалов и рекламы.</p>
+    <div class="hero-cta">
+      <a class="btn btn-key" href="https://vimeo.com/1206949486" target="_blank" rel="noopener">▶&nbsp;Смотреть деморил</a>
+      <button class="btn btn-ghost" onclick="openChat()">💬&nbsp;Написать мне</button>
+    </div>
+  </div>
+  <span class="hero-scroll">SCROLL ▼</span>
+</div>
+
+<div class="ticker" aria-label="Клиенты">
+  <div class="ticker-track" id="tickerTrack">
+    <span>МТС</span><span>Теле2</span><span>Chery</span><span>Jaguar Land Rover</span><span>Hyundai</span><span>Raiffeisen Bank</span><span>Газпром</span><span>Афиша</span>
+  </div>
+</div>
+
+<section id="projects">
+  <span class="sec-label">// timeline: projects</span>
+  <h2>Кино, сериалы, реклама</h2>
+  <div class="proj-cols reveal">
+    <div class="proj-card" style="--pc:#2ee06f">
+      <h3>ПОЛНЫЙ МЕТР</h3>
+      <ul class="film-list">
+        <li>«Кентавр» <span class="fmt">FEATURE</span></li>
+        <li>«1993» <span class="fmt">FEATURE</span></li>
+        <li>«С.Л.О.Н» <span class="fmt">FEATURE</span></li>
+        <li>«Корпорация морозов» <span class="fmt">FEATURE</span></li>
+        <li>«Кореши» <span class="fmt">FEATURE</span></li>
+      </ul>
+    </div>
+    <div class="proj-card" style="--pc:#5aa7ff">
+      <h3>СЕРИАЛЫ</h3>
+      <div class="series-cloud">
+        <span>«Мата Хари»</span><span>«Уродина»</span><span>«Ивушка плакучая 1, 2»</span>
+        <span>«Самозанятые»</span><span>«Казанова 1, 3»</span><span>«Медные трубы»</span>
+        <span>«Праздник жизни»</span><span>«Не в своей тарелке»</span><span>«Падшие»</span>
+        <span>«Анатомия дружбы»</span><span>«Ложная тревога»</span><span>«Полюби меня снова»</span>
+        <span>«Любовь без границ»</span>
+      </div>
+    </div>
+  </div>
+  <div class="proj-cols reveal" style="margin-top:28px">
+    <div class="proj-card" style="--pc:#ffb454">
+      <h3>РЕКЛАМА</h3>
+      <div class="series-cloud">
+        <span>МТС</span><span>Теле2</span><span>Chery</span><span>Jaguar Land Rover Russia</span>
+        <span>Hyundai</span><span>Raiffeisen Bank</span><span>Газпром</span><span>Афиша</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider checker" aria-hidden="true"></div>
+
+<section id="career">
+  <span class="sec-label">// version_history</span>
+  <h2>Карьерный путь</h2>
+  <div class="timeline reveal" style="margin-top:36px">
+    <div class="t-item">
+      <span class="years">2022 — настоящее время</span>
+      <h3>Compositing Artist · Nuke</h3>
+      <p>Переход на Nuke как основной инструмент. Работа над полнометражными фильмами и сериалами. Включение AI-инструментов в пайплайн.</p>
+    </div>
+    <div class="t-item">
+      <span class="years">2018 — 2022</span>
+      <h3>Compositing Artist · AE + Mocha + PS</h3>
+      <p>Клинап, FX и композитинг для рекламы, промо-роликов и сериалов.</p>
+    </div>
+    <div class="t-item">
+      <span class="years">2012 — 2018</span>
+      <h3>Motion Designer</h3>
+      <p>Шаблоны, инфографика, пекшоты, титрование роликов в After Effects. Продажа шаблонов на VideoHive.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Алексей Елфимов · VFX Compositor</span>
+  <span>render complete · no artifacts detected</span>
+</footer>
+
+<button class="chat-fab" id="chatFab" aria-label="Открыть чат" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Чат обратной связи">
+  <div class="chat-head">
+    <div class="chat-ava">АЕ</div>
+    <div class="who"><b>Алексей Елфимов</b><span>онлайн · отвечу быстро</span></div>
+    <button class="chat-close" aria-label="Закрыть" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-input">
+    <input id="chatInput" type="text" placeholder="Ваш ответ…" autocomplete="off" onkeydown="if(event.key==='Enter')sendMsg()">
+    <button id="chatSend" onclick="sendMsg()" aria-label="Отправить">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+    </button>
+  </div>
+</div>
+<script>
+(function(){var t=document.getElementById('tickerTrack');t.innerHTML+=t.innerHTML;})();
+(function(){if(!('IntersectionObserver' in window)){document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in')});return}var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});},{threshold:.12});document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});})();
+var chatState={step:-1,name:'',contact:'',text:''};
+var panel=document.getElementById('chatPanel');
+var body=document.getElementById('chatBody');
+var input=document.getElementById('chatInput');
+var started=false;
+function toggleChat(){panel.classList.toggle('open');if(panel.classList.contains('open')){if(!started){started=true;botSay('Привет! Я на связи 👋 Расскажите о вашем проекте или вакансии.',function(){botSay('Как вас зовут?');chatState.step=0;});}setTimeout(function(){input.focus()},250);}}
+function openChat(){if(!panel.classList.contains('open'))toggleChat()}
+function addMsg(cls,html){var d=document.createElement('div');d.className='msg '+cls;d.innerHTML=html;body.appendChild(d);body.scrollTop=body.scrollHeight;return d;}
+function botSay(html,cb){var t=document.createElement('div');t.className='msg bot typing';t.innerHTML='<i></i><i></i><i></i>';body.appendChild(t);body.scrollTop=body.scrollHeight;setTimeout(function(){t.classList.remove('typing');t.innerHTML=html;body.scrollTop=body.scrollHeight;if(cb)setTimeout(cb,450);},650);}
+function esc(s){return s.replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];})}
+function sendMsg(){var v=input.value.trim();if(!v||chatState.step<0||chatState.step>2)return;addMsg('user',esc(v));input.value='';if(chatState.step===0){chatState.name=v;chatState.step=1;botSay('Приятно познакомиться, '+esc(v)+'! Оставьте контакт для связи — Telegram или почту.');}else if(chatState.step===1){chatState.contact=v;chatState.step=2;botSay('Отлично. Теперь коротко о задаче: что за проект, сроки, объём?');}else if(chatState.step===2){chatState.text=v;chatState.step=3;finishChat();}}
+function finishChat(){var summary='Заявка с сайта\n\nИмя: '+chatState.name+'\nКонтакт: '+chatState.contact+'\nСообщение: '+chatState.text;var mail='mailto:elfimovalexey@yandex.ru?subject='+encodeURIComponent('Заявка с сайта — '+chatState.name)+'&body='+encodeURIComponent(summary);botSay('Спасибо! Заявка собрана 🎬',function(){addMsg('bot','<b>'+esc(chatState.name)+'</b> · '+esc(chatState.contact)+'<br>'+esc(chatState.text)+'<div class="actions"><a href="https://t.me/thenullobject" target="_blank" rel="noopener" onclick="copySummary()">Написать в Telegram (текст скопируется)</a><a href="'+mail+'">Отправить на почту</a><button type="button" onclick="copySummary(this)">Скопировать заявку</button></div>');window._summary=summary;});}
+function copySummary(btn){if(navigator.clipboard){navigator.clipboard.writeText(window._summary||'');}if(btn){btn.textContent='Скопировано ✓';setTimeout(function(){btn.textContent='Скопировать заявку'},2000);}}
+</script>
+</body>
+</html>
