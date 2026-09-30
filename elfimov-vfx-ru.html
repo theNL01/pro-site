@@ -153,6 +153,23 @@ nav a.nav-cta{color:var(--key)}
 .brief-done .brief-submit{width:auto;padding:12px 30px}
 @media(max-width:520px){.row2{grid-template-columns:1fr}.brief-fab{right:16px;bottom:16px}}
 #projects h2{margin-bottom:34px}
+@media(max-width:640px){
+header{padding:12px 20px}
+section{padding:60px 20px}
+.hero{min-height:600px}
+.hero-inner{padding:0 20px 104px}
+h1{font-size:clamp(24px,6.8vw,40px);line-height:1.08;margin-bottom:12px}
+.hero-sub{font-size:15px;margin-bottom:22px}
+.hero-cta{flex-direction:column;align-items:stretch;gap:10px}
+.hero-cta .btn{justify-content:center;width:100%;padding:14px 18px}
+h2{margin-bottom:16px}
+#projects h2{margin-bottom:22px}
+.proj-cols{gap:16px}
+footer{padding:22px 20px}
+.brief-fab{width:54px;padding:0;justify-content:center;right:16px;bottom:16px}
+.brief-fab span{display:none}
+.brief-fab svg{width:22px;height:22px}
+}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}.reveal{opacity:1;transform:none}}
 </style>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -184,7 +201,6 @@ nav a.nav-cta{color:var(--key)}
   </div>
   <div class="hero-shade"></div>
   <div class="hero-inner">
-    <span class="hero-tag"><span class="dot"></span>OPEN TO WORK · FULLTIME / PROJECT</span>
     <h1>Алексей Елфимов<br><span class="alpha">VFX Compositor</span></h1>
     <p class="hero-sub">Композитинг для кино, сериалов и рекламы.</p>
     <div class="hero-cta">
