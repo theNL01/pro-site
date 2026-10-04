@@ -185,6 +185,8 @@ footer{padding:22px 20px}
 .hero-inner{margin-top:calc(var(--h1) * -2.25);padding-top:0;padding-bottom:40px}
 .hero h1{font-size:var(--h1);line-height:1.08}
 }
+a.logo{color:var(--text)}
+a.logo:hover{text-decoration:none;opacity:.85}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}.reveal{opacity:1;transform:none}}
 </style>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -195,7 +197,7 @@ footer{padding:22px 20px}
 </head>
 <body>
 <header>
-  <div class="logo"><b>elfimov</b>.pro</div>
+  <a class="logo" href="#top" onclick="window.scrollTo({top:0,behavior:(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)?'auto':'smooth'});return false" aria-label="elfimov.pro — наверх"><b>elfimov</b>.pro</a>
   <div class="header-right">
     <nav>
       <a href="#projects">Проекты</a>
@@ -292,7 +294,6 @@ footer{padding:22px 20px}
 
 <footer>
   <span>© 2026 Алексей Елфимов · VFX Compositor</span>
-  <span>Сайт использует Яндекс Метрику и учитывает посещения для статистики.</span>
 </footer>
 
 <button class="brief-fab" id="briefFab" aria-haspopup="dialog" aria-label="Оставить заявку на проект" onclick="openForm()">
