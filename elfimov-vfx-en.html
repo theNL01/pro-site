@@ -194,7 +194,7 @@ footer{padding:22px 20px}
     <a href="#" class="nav-cta" onclick="openForm();return false">Request</a>
     </nav>
     <div class="lang-switch">
-      <a href="elfimov-vfx-ru.html">RU</a>
+      <a href="elfimov-vfx-ru.html" onclick="goal('lang_switch')">RU</a>
       <a class="active" href="elfimov-vfx-en.html">EN</a>
     </div>
   </div>
@@ -210,7 +210,7 @@ footer{padding:22px 20px}
     <h1>Alexey Elfimov<br><span class="alpha">VFX Compositor</span></h1>
     <p class="hero-sub">Compositing for film, TV series and advertising.</p>
     <div class="hero-cta">
-      <a class="btn btn-key" href="https://vimeo.com/1206949486" target="_blank" rel="noopener">▶&nbsp;Watch Demo Reel</a>
+      <a class="btn btn-key" href="https://vimeo.com/1206949486" target="_blank" rel="noopener" onclick="goal('reel_click')">▶&nbsp;Watch Demo Reel</a>
       <button class="btn btn-ghost" onclick="openForm()">Send a request</button>
     </div>
   </div>
@@ -283,6 +283,7 @@ footer{padding:22px 20px}
 
 <footer>
   <span>© 2026 Alexey Elfimov · VFX Compositor</span>
+  <span>This site uses Yandex Metrica and logs visits for statistics.</span>
 </footer>
 
 <button class="brief-fab" id="briefFab" aria-haspopup="dialog" aria-label="Send a project request" onclick="openForm()">
@@ -333,7 +334,7 @@ footer{padding:22px 20px}
 var FORM_URL='https://script.google.com/macros/s/AKfycbxTis0VkhK6GtFRVYJo3WelIO7EMwTrPd1K4ne_F82GlAgG7mFr_8aS_MG3zSVG7YIyAg/exec';
 var L={type:'Project type',deadline:'Timeline',task:'Task',site:'Site version: EN',sending:'Sending…',submit:'Send request',req:'Please fill in the required fields.',fail:'Could not send. Write me directly:'};
 var ov=document.getElementById('briefOverlay'),bForm=document.getElementById('briefForm'),bDone=document.getElementById('briefDone'),bStatus=document.getElementById('briefStatus'),bBtn=document.getElementById('briefSubmit'),lastFocus=null,sending=false;
-function openForm(){lastFocus=document.activeElement;ov.classList.add('open');document.body.style.overflow='hidden';setTimeout(function(){var f=document.getElementById('bName');if(f&&bForm.style.display!=='none')f.focus();},220);}
+function openForm(){goal('form_open');lastFocus=document.activeElement;ov.classList.add('open');document.body.style.overflow='hidden';setTimeout(function(){var f=document.getElementById('bName');if(f&&bForm.style.display!=='none')f.focus();},220);}
 function closeForm(){ov.classList.remove('open');document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus();if(bDone.style.display==='block'){setTimeout(function(){bForm.reset();bForm.style.display='';bDone.style.display='none';bStatus.textContent='';},250);}}
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov.classList.contains('open'))closeForm()});
 function setErr(id,on){document.getElementById(id).classList.toggle('err',on)}
@@ -350,10 +351,50 @@ bForm.addEventListener('submit',function(e){
   sending=true;bBtn.disabled=true;bBtn.textContent=L.sending;
   fetch(FORM_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({name:name,contact:contact,text:msg})})
     .then(function(r){return r.json()})
-    .then(function(j){if(j&&j.ok){showDone()}else{throw new Error('bad response')}})
+    .then(function(j){if(j&&j.ok){goal('form_sent');showDone()}else{throw new Error('bad response')}})
     .catch(function(){bStatus.innerHTML=L.fail+' <a href="https://t.me/thenullobject" target="_blank" rel="noopener">@thenullobject</a>';})
     .then(function(){sending=false;bBtn.disabled=false;bBtn.textContent=L.submit;});
 });
+
+/* ===== Analytics: Yandex Metrica + visit notifications ===== */
+var YM_ID=0; /* номер счётчика Яндекс Метрики (8 цифр); 0 — не подключать */
+var VISIT_NOTIFY=true; /* false — не слать уведомления о визитах в Telegram */
+var VISIT_KEY='v_86ea4427d269fd65';
+function goal(n){try{if(YM_ID&&window.ym)ym(YM_ID,'reachGoal',n)}catch(e){}}
+(function(){
+  if(!YM_ID)return;
+  (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t);a=e.getElementsByTagName(t)[0];k.async=1;k.src=r;a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');
+  ym(YM_ID,'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:false});
+})();
+(function(){
+  if(!VISIT_NOTIFY)return;
+  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+  var q;try{q=new URLSearchParams(location.search)}catch(e){q={get:function(){return null}}}
+  if(q.get('me')==='1')ls('el_me','1');
+  if(q.get('me')==='0')ls('el_me','');
+  if(ls('el_me')==='1')return;
+  var ua=navigator.userAgent||'';
+  if(navigator.webdriver||/bot|crawl|spider|preview|headless|lighthouse|slurp|facebookexternalhit|whatsapp|vkshare|yandexmetrika/i.test(ua))return;
+  function osName(){return /Android/i.test(ua)?'Android':/iPhone|iPad|iPod/i.test(ua)?'iOS':/Windows/i.test(ua)?'Windows':/Mac OS X/i.test(ua)?'macOS':/Linux/i.test(ua)?'Linux':'?'}
+  function brName(){return /YaBrowser/i.test(ua)?'Yandex':/Edg\//i.test(ua)?'Edge':/OPR\/|Opera/i.test(ua)?'Opera':/Firefox/i.test(ua)?'Firefox':/Chrome|CriOS/i.test(ua)?'Chrome':/Safari/i.test(ua)?'Safari':'?'}
+  setTimeout(function(){
+    var now=Date.now(),last=parseInt(ls('el_v')||'0',10)||0;
+    if(now-last<1800000)return;
+    ls('el_v',String(now));
+    var ref=(q.get('ref')||'').replace(/[^\w.-]/g,'').slice(0,30);
+    var from='';try{from=document.referrer?new URL(document.referrer).hostname:''}catch(e){}
+    if(from===location.hostname)from='';
+    var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}
+    var base={type:'visit',key:VISIT_KEY,ref:ref,from:from,os:osName(),br:brName(),mobile:/Mobi|Android|iPhone/i.test(ua)?1:0,site:document.documentElement.lang||'',lang:(navigator.language||'').slice(0,12),tz:tz,page:location.pathname.slice(0,60)};
+    function send(extra){for(var k in extra)base[k]=extra[k];try{fetch(FORM_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(base),keepalive:true}).catch(function(){})}catch(e){}}
+    var ctl=window.AbortController?new AbortController():null;
+    var timer=setTimeout(function(){if(ctl)ctl.abort()},3500);
+    fetch('https://get.geojs.io/v1/ip/geo.json',ctl?{signal:ctl.signal}:{})
+      .then(function(r){return r.json()})
+      .then(function(g){clearTimeout(timer);send({country:g.country||'',region:g.region||'',city:g.city||'',org:g.organization_name||''})})
+      .catch(function(){clearTimeout(timer);send({})});
+  },4000);
+})();
 </script>
 </body>
 </html>
