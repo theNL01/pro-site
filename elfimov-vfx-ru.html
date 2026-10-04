@@ -404,7 +404,7 @@ function goal(n){try{if(YM_ID&&window.ym)ym(YM_ID,'reachGoal',n)}catch(e){}}
       .then(function(r){return r.json()})
       .then(function(g){clearTimeout(timer);send({country:g.country||'',region:g.region||'',city:g.city||'',org:g.organization_name||''})})
       .catch(function(){clearTimeout(timer);send({})});
-  },4000);
+  },0);
 })();
 </script>
 </body>
