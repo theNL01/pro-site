@@ -392,7 +392,7 @@ function goal(n){try{if(YM_ID&&window.ym)ym(YM_ID,'reachGoal',n)}catch(e){}}
     var now=Date.now(),last=parseInt(ls('el_v')||'0',10)||0;
     if(now-last<1800000)return;
     ls('el_v',String(now));
-    var ref=(q.get('ref')||'').replace(/[^\w.-]/g,'').slice(0,30);
+    var ref=(q.get('ref')||q.get('utm_source')||'').replace(/[^\w.-]/g,'').slice(0,30);
     var from='';try{from=document.referrer?new URL(document.referrer).hostname:''}catch(e){}
     if(from===location.hostname)from='';
     var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}
