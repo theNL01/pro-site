@@ -189,12 +189,12 @@ a.logo{color:var(--text)}
 a.logo:hover{text-decoration:none;opacity:.85}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}.reveal{opacity:1;transform:none}}
 
-.snd{position:absolute;right:28px;bottom:24px;z-index:3;display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 14px 0 12px;border-radius:99px;border:1px solid rgba(46,224,111,.35);background:rgba(25,27,31,.6);color:var(--key);font-family:var(--mono);font-size:12px;letter-spacing:.06em;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .2s,border-color .2s}
+.snd{position:absolute;right:24px;top:70px;z-index:3;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border-radius:50%;border:1px solid rgba(46,224,111,.35);background:rgba(25,27,31,.6);color:var(--key);cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .2s,border-color .2s}
 .snd:hover{background:rgba(25,27,31,.85);border-color:var(--key)}
 .snd svg{width:20px;height:20px;flex:none}
 .snd .on{display:none}.snd.is-on .on{display:block}.snd.is-on .off{display:none}
-@media(max-width:640px){.snd{right:12px;bottom:auto;top:calc(54px + 10px);height:38px}}
-@media(max-aspect-ratio:1/1){.snd{right:12px;bottom:auto;top:calc(54px + 10px)}}
+@media(max-width:640px){.snd{right:12px;top:calc(54px + 10px);width:36px;height:36px}.snd svg{width:18px;height:18px}}
+@media(max-aspect-ratio:1/1){.snd{right:12px;top:calc(54px + 10px)}}
 </style>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -223,7 +223,7 @@ a.logo:hover{text-decoration:none;opacity:.85}
     <iframe src="https://player.vimeo.com/video/1206949486?autoplay=1&muted=1&loop=1&autopause=0&controls=0&title=0&byline=0&portrait=0&dnt=1"
       allow="autoplay; fullscreen" title="Alexey Elfimov demo reel"></iframe>
   </div>
-<button class="snd" id="snd" type="button" aria-pressed="false" aria-label="Turn sound on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/><g class="off"><path d="m16 9 5 6M21 9l-5 6"/></g><g class="on"><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></g></svg><span id="sndl">Turn sound on</span></button>
+<button class="snd" id="snd" type="button" aria-pressed="false" aria-label="Turn sound on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/><g class="off"><path d="m16 9 5 6M21 9l-5 6"/></g><g class="on"><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></g></svg></button>
   <div class="hero-shade"></div>
   <div class="hero-inner">
     <h1>Alexey Elfimov<br><span class="alpha">VFX Compositor</span></h1>
@@ -417,7 +417,7 @@ function goal(n){try{if(YM_ID&&window.ym)ym(YM_ID,'reachGoal',n)}catch(e){}}
 
 /* звук: плеер Vimeo управляется через postMessage */
 (function(){
-  var b=document.getElementById('snd'),l=document.getElementById('sndl');
+  var b=document.getElementById('snd');
   var f=document.querySelector('.hero-video iframe');
   if(!b||!f)return;
   var T={on:'Turn sound on',off:'Turn sound off'},on=false;
@@ -426,7 +426,7 @@ function goal(n){try{if(YM_ID&&window.ym)ym(YM_ID,'reachGoal',n)}catch(e){}}
     on=!on;
     if(on){send('setMuted',false);send('setVolume',1);send('play')}else{send('setMuted',true)}
     b.classList.toggle('is-on',on);b.setAttribute('aria-pressed',on);
-    b.setAttribute('aria-label',on?T.off:T.on);l.textContent=on?T.off:T.on;
+    b.setAttribute('aria-label',on?T.off:T.on);
   });
 })();
 </script>
